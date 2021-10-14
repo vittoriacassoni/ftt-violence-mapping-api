@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 const config = {
-  server: 'ftt-violence-mapping.database.windows.net',
-  database: 'ftt_violence_mapping',
-  user: 'azureuser',
-  password: '&@9!Y!Rq6u*L',
+  server: process.env.DB_SERVER,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   port: 1433,
   options: {
     encrypt: true,
