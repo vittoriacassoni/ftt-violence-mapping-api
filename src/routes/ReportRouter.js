@@ -1,18 +1,12 @@
 const { Router } = require('express');
-const app = Router();
+const reportRoute = Router();
 const reportController = require('../controllers/ReportController');
 
-const ReportController = reportController;
+reportRoute.get('/', (req, res) => reportController.getReport(req, res));
+reportRoute.get('/:id', (req, res) => reportController.getReportById(req, res));
+reportRoute.get('/user/:id', (req, res) => reportController.getReportByUserId(req, res));
+reportRoute.post('/', (req, res) => reportController.createReport(req, res));
 
-class ReportRouter {
-    getRoutes() {
-        app.get('/', (req, res) => ReportController.getReport(req, res));
-        app.post('/', (req, res) => ReportController.createReport(req, res));
-        app.put('/', (req, res) => ReportController.updateReport(req, res));
-        app.delete('/:id', (req, res) => ReportController.deleteReport(req, res));
 
-        return app
-    }
-}
+module.exports = reportRoute;
 
-module.exports = new ReportRouter();

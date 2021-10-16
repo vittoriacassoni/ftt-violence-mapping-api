@@ -1,24 +1,50 @@
 const { Response, Request } = require('express');
+const reportService = require('../services/ReportService');
 
-const report = require("../models/Report")
+const Report = require('../models/Report');
 
-class ReportController 
-{
-    async getReport(req, res) {
-        //TODO: SERVICE GETUSER
-    }
+class ReportController {
+  async getReport(req, res) {
+    const reports = await reportService.getReport();
+    res.json(reports);
+  }
 
-    async createReport(req, res) {
-        //TODO: SERVICE GETUSER
-    }
+  async createReport(req, res) {
+    try {
+        const reportReq = req.body;
+  
+        const report = new Report(
+          0,
+          reportReq.id_user,
+          reportReq.latitude,
+          reportReq.longitude,
+          reportReq.address,
+          reportReq.cep,
+          reportReq.type,
+          reportReq.date,
+          reportReq.description
+        );
+        const response = await reportService.createReport(report);
+  
+        res.json(response);
+      } catch (e) {
+        console.log(e);
+      }
+  }
 
-    async updateReport(req, res) {
-        //TODO: SERVICE GETUSER
-    }
+  async getReportById(req, res) {
+    const id = req.params.id;
+    const report = await reportService.getReportById(id);
 
-    async deleteReport(req, res) {
-        //TODO: SERVICE GETUSER
-    }
+    res.json(report);
+  }
+
+  async getReportByUserId(req, res) {
+    const id = req.params.id;
+    const report = await reportService.getReportByUserId(id);
+
+    res.json(report);
+  }
 }
 
-module.exports = new UserController();
+module.exports = new ReportController();

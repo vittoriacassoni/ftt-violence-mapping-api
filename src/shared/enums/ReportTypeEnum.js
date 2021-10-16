@@ -1,0 +1,11 @@
+
+
+const reportTypes = {
+        
+    VERBAL_HARASSMENT: 0,
+    PHYSICAL_HARASSMENT: 1,
+    SEXUAL_HARASSMENT: 2,
+    ASSAULT: 3,
+    SUSPICIOUS_ATTITUDE: 4
+
+}
