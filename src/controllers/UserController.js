@@ -5,16 +5,7 @@ const User = require('../models/User');
 class UserController {
   async getUser(req, res) {
     const users = await userService.getUser();
-
-    if (users.length <= 0) {
-      
-      res.send('ok');
-
-    }
-    else{
-
-      res.json(users);
-    }
+    res.json(users);
   }
 
   async getUserById(req, res) {
@@ -34,11 +25,12 @@ class UserController {
         userReq.last_name,
         userReq.email,
         userReq.contact,
-        userReq.birth_date
+        userReq.birth_date,
+        userReq.password
       );
       const response = await userService.createUser(user);
 
-      return res.json(response);
+      res.json(response);
     } catch (e) {
       console.log(e);
     }
@@ -54,11 +46,12 @@ class UserController {
         userReq.last_name,
         userReq.email,
         userReq.contact,
-        userReq.birth_date
+        userReq.birth_date,
+        userReq.password
       );
       const response = await userService.updateUser(user);
 
-      return res.json(response);
+      res.json(response);
     } catch (e) {
       console.log(e);
     }
@@ -72,16 +65,21 @@ class UserController {
   }
 
   async login(req, res) {
-    const email = req.params.email;
-    const password = req.params.password;
-    const response = await  userService.login(email,password)
-    .then((response) => {
-      if(response){
-         res.json({response});
-    }
-      else{
-         res.status(401).send('Usuário e senha inválidos');
-    }}).catch((err) => { res.status(400).send('Error: ' + err.message)});  
+    const email = req.query.email;
+    const password = req.query.password;
+
+    await userService
+      .login(email, password)
+      .then((response) => {
+        if (response) {
+          res.json({ response });
+        } else {
+          res.status(401).send('Usuário e senha inválidos');
+        }
+      })
+      .catch((err) => {
+        res.status(400).send('Error: ' + err.message);
+      });
   }
 }
 
