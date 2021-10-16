@@ -5,7 +5,16 @@ const User = require('../models/User');
 class UserController {
   async getUser(req, res) {
     const users = await userService.getUser();
-    res.json(users);
+
+    if (users.length <= 0) {
+      
+      res.send('ok');
+
+    }
+    else{
+
+      res.json(users);
+    }
   }
 
   async getUserById(req, res) {
@@ -60,6 +69,19 @@ class UserController {
     await userService.deleteUser(id);
 
     res.send('ok');
+  }
+
+  async login(req, res) {
+    const email = req.params.email;
+    const password = req.params.password;
+    const response = await  userService.login(email,password)
+    .then((response) => {
+      if(response){
+         res.json({response});
+    }
+      else{
+         res.status(401).send('Usuário e senha inválidos');
+    }}).catch((err) => { res.status(400).send('Error: ' + err.message)});  
   }
 }
 

@@ -1,5 +1,9 @@
 const userRepository = require('../repositories/UserRepository');
 const User = require('../models/User');
+const Q = require('q');
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
 
 class UserService {
   async getUser() {
@@ -32,6 +36,21 @@ class UserService {
   async deleteUser(id) {
     await userRepository.deleteUser(id);
     return;
+  }
+
+  async login(email,password) {
+    var deferred = Q.defer();
+    const response = new User(await userRepository.getUserByEmail(email));
+    if(response[0].length > 0){ //TODO verificação senha
+
+      const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 300 });
+      deferred.resolve({token,userID:response.id});
+    }
+    else{
+
+      deferred.resolve();
+    }
+    return response;
   }
 }
 

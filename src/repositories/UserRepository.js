@@ -77,6 +77,19 @@ class UserRepository {
       console.log();
     }
   }
+
+  async getUserByEmail(email) {
+    try {
+      let conn = await sql.connect(config);
+
+      var user = await conn.request().input('Email', email).query(`SELECT * FROM Users 
+            WHERE Email = @Email`);
+
+      return user.recordsets;
+    } catch (error) {
+      console.log();
+    }
+  }
 }
 
 module.exports = new UserRepository();
