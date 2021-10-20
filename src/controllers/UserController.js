@@ -1,6 +1,7 @@
 const { Response, Request } = require('express');
 const userService = require('../services/UserService');
 const User = require('../models/User');
+const Error = require('../shared/validations/Error');
 
 class UserController {
   async getUser(req, res) {
@@ -26,9 +27,12 @@ class UserController {
         userReq.email,
         userReq.contact,
         userReq.birth_date,
-        userReq.password
+        userReq.password_hash
       );
       const response = await userService.createUser(user);
+      if(response instanceof Error){
+        res.status(response.statusCode).json(response.message);
+      }
 
       res.json(response);
     } catch (e) {
@@ -47,7 +51,7 @@ class UserController {
         userReq.email,
         userReq.contact,
         userReq.birth_date,
-        userReq.password
+        userReq.password_hash
       );
       const response = await userService.updateUser(user);
 
@@ -66,7 +70,7 @@ class UserController {
 
   async login(req, res) {
     const email = req.query.email;
-    const password = req.query.password;
+    const password = req.query.password_hash;
 
     await userService
       .login(email, password)
