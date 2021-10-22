@@ -27,16 +27,18 @@ class UserController {
         userReq.email,
         userReq.contact,
         userReq.birth_date,
-        userReq.password_hash
+        userReq.password
       );
+
       const response = await userService.createUser(user);
-      if(response instanceof Error){
+
+      if (response instanceof Error) {
         res.status(response.statusCode).json(response.message);
       }
 
       res.json(response);
     } catch (e) {
-      console.log(e);
+      res.status(500).json(e.message);
     }
   }
 
@@ -70,20 +72,15 @@ class UserController {
 
   async login(req, res) {
     const email = req.query.email;
-    const password = req.query.password_hash;
+    const password = req.query.password;
 
-    await userService
-      .login(email, password)
-      .then((response) => {
-        if (response) {
-          res.json({ response });
-        } else {
-          res.status(401).send('Usuário e senha inválidos');
-        }
-      })
-      .catch((err) => {
-        res.status(400).send('Error: ' + err.message);
-      });
+    const response = await userService.login(email, password);
+
+    if (response instanceof Error) {
+      res.status(response.statusCode).json(response.message);
+    }
+
+    res.status(200).json(response);
   }
 }
 

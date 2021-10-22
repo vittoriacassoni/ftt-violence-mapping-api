@@ -3,56 +3,56 @@ const Report = require('../models/Report');
 const Validations = require('../shared/validations/Validations');
 
 class ReportService {
-    async getReport() {
-      const reports = await reportRepository.getReport();
-  
-      return reports;
-    }
-  
-    async getReportById(id) {
-      const report = await reportRepository.getReportById(id);
-  
-      return report;
-    }
+  async getReport() {
+    const reports = await reportRepository.getReport();
 
-    async getReportByUserId(id) {
-        const report = await reportRepository.getReportByUserId(id);
-    
-        return report;
-      }
-  
-    async createReport(report) {
-      
-      console.log(JSON.stringify(report))
-      var errors = [];
+    return reports;
+  }
 
-      if(!Validations.validateLatitude(report.latitude))
-      errors.push('Campo inválido');
+  async getReportById(id) {
+    const report = await reportRepository.getReportById(id);
 
-      if(!Validations.validateLongitude(report.longitude))
-      errors.push('Campo inválido');
+    return report;
+  }
 
-      if(!Validations.validateRequiredField(report.address))
-      errors.push('Campo Endereço obrigatório');
+  async getReportByUserId(id) {
+    const report = await reportRepository.getReportByUserId(id);
 
-      if(!Validations.validateCep(report.cep))
-      errors.push('Campo CEP fora do padrão correto');
+    return report;
+  }
 
-      if(!Validations.validateRequiredField(report.description))
-      errors.push('Campo Descrição obrigatório');
+  async createReport(report) {
+    console.log(JSON.stringify(report));
+    var errors = [];
 
-      //TODO VALIDATEDATE
-      //TODO VALIDATETYPE
+    if (
+      !Validations.validateRequiredField(report.latitude) ||
+      !Validations.validateRequiredField(report.longitude)
+    )
+      errors.push('É obrigatório informar um endereço!');
 
-      if(errors.length > 0){
-        return new Error (errors.join(', '),400);
-      }
+    if (!Validations.validateRequiredField(report.address))
+      errors.push('Campo Endereço obrigatório!');
 
-      const response = await reportRepository.createReport(report);
-  
-      return response;
+    if (!Validations.validateCep(report.cep))
+      errors.push('Campo CEP fora do padrão correto!');
+
+    if (!Validations.validateRequiredField(report.description))
+      errors.push('Campo Descrição obrigatório!');
+
+    if (!Validations.validateDate(report.date))
+      errors.push('Campo Data de Nascimento inválido!');
+
+    //TODO VALIDATETYPE
+
+    if (errors.length > 0) {
+      return new Error(errors.join(', '), 400);
     }
 
+    const response = await reportRepository.createReport(report);
+
+    return response;
+  }
 }
 
 module.exports = new ReportService();

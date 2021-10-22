@@ -23,31 +23,32 @@ class UserService {
   }
 
   async createUser(user) {
-    
-    console.log(JSON.stringify(user));
     var errors = [];
-    
-    if(!Validations.validateStringAlphaRequired(user.first_name))
-      errors.push('Campo Nome deve ser obrigatório e conter apenas letras');
-    
-    if(!Validations.validateStringAlphaRequired(user.last_name))
-      errors.push('Campo Sobrenome deve ser obrigatório e conter apenas letras');
 
-    if(!Validations.validateEmail(user.email))
+    if (!Validations.validateStringAlphaRequired(user.first_name))
+      errors.push('Campo Nome deve ser obrigatório e conter apenas letras');
+
+    if (!Validations.validateStringAlphaRequired(user.last_name))
+      errors.push(
+        'Campo Sobrenome deve ser obrigatório e conter apenas letras'
+      );
+
+    if (!Validations.validateEmail(user.email))
       errors.push('Campo E-mail inválido');
 
-    if(!Validations.validatePhoneNumber(user.contact))
+    if (!Validations.validatePhoneNumber(user.contact))
       errors.push('Campo Telefone inválido');
 
-    if(!validateRequiredField(user.password_hash))
+    if (!Validations.validateRequiredField(user.password_hash))
       errors.push('Campo Senha é obrigatório');
 
-      //TODO VALIDATEDATE
+    if (!Validations.validateDate(user.birth_date))
+      errors.push('Campo Data de Nascimento inválido');
 
-    if(errors.length > 0){
-      return new Error (errors.join(', '),400);
+    if (errors.length > 0) {
+      return new Error(errors.join(', '), 400);
     }
-  
+
     const response = await userRepository.createUser(user);
 
     return response;
@@ -67,8 +68,6 @@ class UserService {
   }
 
   async login(email, password) {
-    var deferred = Q.defer();
-
     const response = await userRepository.getUserByEmail(email);
     const [userResponse] = response;
 
@@ -86,15 +85,12 @@ class UserService {
       userResponse !== undefined &&
       bcrypt.compareSync(password, user.password_hash)
     ) {
-      console.log('deu bom na validacao');
-
       const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET);
-      deferred.resolve({ token, userID: user.id });
-    } else {
-      deferred.resolve();
-    }
 
-    return deferred.promise;
+      return { token, userID: user.id };
+    } else {
+      return new Error('Usuário ou Senha inválidos', 401);
+    }
   }
 }
 

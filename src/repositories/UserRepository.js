@@ -23,28 +23,24 @@ class UserRepository {
   }
 
   async createUser(model) {
-    try {
-      let conn = await sql.connect(config);
+    let conn = await sql.connect(config);
 
-      var user = lodash.omit(model, 'password_hash');
+    var user = lodash.omit(model, 'password_hash');
 
-      user.password_hash = bcrypt.hashSync(model.password_hash, 10);
+    user.password_hash = bcrypt.hashSync(model.password_hash, 10);
 
-      var users = await conn
-        .request()
-        .input('First_Name', user.first_name)
-        .input('Last_Name', user.last_name)
-        .input('Email', user.email)
-        .input('Contact', user.contact)
-        .input('Birth_Date', user.birth_date)
-        .input('Password_Hash', user.password_hash)
-        .query(`INSERT INTO Users VALUES 
+    var users = await conn
+      .request()
+      .input('First_Name', user.first_name)
+      .input('Last_Name', user.last_name)
+      .input('Email', user.email)
+      .input('Contact', user.contact)
+      .input('Birth_Date', user.birth_date)
+      .input('Password_Hash', user.password_hash)
+      .query(`INSERT INTO Users VALUES 
             ( @First_Name, @Last_Name, @Email, @Contact, @Birth_Date, @Password_Hash)`);
 
-      return users.recordsets;
-    } catch (error) {
-      console.log();
-    }
+    return users.recordsets;
   }
 
   async updateUser(model) {
