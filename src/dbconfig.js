@@ -8,6 +8,7 @@ const config = {
   port: 1433,
   options: {
     encrypt: true,
+    trustServerCertificate: true,
   },
 };
 module.exports = config;
