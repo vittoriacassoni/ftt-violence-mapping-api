@@ -69,8 +69,8 @@ class UserService {
 
   async login(email, password) {
     const response = await userRepository.getUserByEmail(email);
+    console.log(response)
     const [userResponse] = response;
-
     const user = new User(
       userResponse.ID,
       userResponse.First_Name,
@@ -85,7 +85,7 @@ class UserService {
       userResponse !== undefined &&
       bcrypt.compareSync(password, user.password_hash)
     ) {
-      const token = jwt.sign({ sub: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET);
 
       return { token, userID: user.id };
     } else {

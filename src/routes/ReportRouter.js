@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const reportRoute = Router();
 const reportController = require('../controllers/ReportController');
+const middlewares = require('../shared/middlewares/middleware');
 
-reportRoute.get('/', (req, res) => reportController.getReport(req, res));
-reportRoute.get('/:id', (req, res) => reportController.getReportById(req, res));
-reportRoute.get('/user/:id', (req, res) => reportController.getReportByUserId(req, res));
-reportRoute.post('/', (req, res) => reportController.createReport(req, res));
+reportRoute.get('/', middlewares.authentication,  reportController.getReport);
+reportRoute.get('/:id', middlewares.authentication,  reportController.getReportById);
+reportRoute.get('/user/:id', middlewares.authentication,  reportController.getReportByUserId);
+reportRoute.post('/', middlewares.authentication,  reportController.createReport);
 
 
 module.exports = reportRoute;
