@@ -69,7 +69,7 @@ class UserService {
 
   async login(email, password) {
     const response = await userRepository.getUserByEmail(email);
-    console.log(response)
+
     const [userResponse] = response;
     const user = new User(
       userResponse.ID,
