@@ -22,7 +22,6 @@ class ReportService {
   }
 
   async createReport(report) {
-    console.log(JSON.stringify(report));
     var errors = [];
 
     if (
