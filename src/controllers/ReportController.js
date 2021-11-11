@@ -11,25 +11,25 @@ class ReportController {
 
   async createReport(req, res) {
     try {
-        const reportReq = req.body;
-  
-        const report = new Report(
-          0,
-          reportReq.id_user,
-          reportReq.latitude,
-          reportReq.longitude,
-          reportReq.address,
-          reportReq.cep,
-          reportReq.type,
-          reportReq.date,
-          reportReq.description
-        );
-        const response = await reportService.createReport(report);
-  
-        res.json(response);
-      } catch (e) {
-        console.log(e);
-      }
+      const reportReq = req.body;
+
+      const report = new Report(
+        0,
+        reportReq.id_user,
+        reportReq.latitude,
+        reportReq.longitude,
+        reportReq.address,
+        reportReq.cep,
+        reportReq.type,
+        reportReq.date,
+        reportReq.description
+      );
+      const response = await reportService.createReport(report);
+
+      res.json(response);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getReportById(req, res) {
