@@ -40,7 +40,9 @@ class ReportController {
   }
 
   async getReportByUserId(req, res) {
-    const id = req.params.id;
+    const { id } = req.user;
+    console.log('teste');
+
     const report = await reportService.getReportByUserId(id);
 
     res.json(report);
