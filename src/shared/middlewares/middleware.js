@@ -12,6 +12,9 @@ module.exports = {
       jwt.verify(token, process.env.JWT_SECRET, (error, userInfo) => {
         if (error) res.status(403).end();
 
+        const { sub } = userInfo;
+
+        req.user = { id: sub };
         next();
       });
     }
