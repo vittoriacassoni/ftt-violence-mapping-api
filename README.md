@@ -11,9 +11,9 @@ Por meio de um mapa de calor será possível visualizar se a região é segura o
   <br />
   <br />
  
-<img src="https://drive.google.com/uc?export=view&id=1FWjNMQusw8odzr1uWV3b-6HVP_olX-i1" style="width: 650px; max-width: 100%; height: 400px" title="Exemplo" />
+<img src="https://drive.google.com/uc?export=view&id=1FWjNMQusw8odzr1uWV3b-6HVP_olX-i1" style="width: 250px; max-width: 100%; height: 400px" title="Exemplo" />
  
-<img src="https://drive.google.com/uc?export=view&id=1WYi09aKwimBdpa-tsYGgqifKcmISXk16" style="width: 650px; max-width: 100%; height: 400px" title="Exemplo" />
+<img src="https://drive.google.com/uc?export=view&id=1WYi09aKwimBdpa-tsYGgqifKcmISXk16" style="width: 250px; max-width: 100%; height: 400px" title="Exemplo" />
  
 
 ## Ferramentas
